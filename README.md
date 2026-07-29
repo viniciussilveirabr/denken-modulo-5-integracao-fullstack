@@ -8,13 +8,10 @@ Integrantes da equipe
 
 Substitua os campos abaixo pelos nomes reais antes da entrega.
 
-Integrante 1: [Nome completo]
+Integrante 1: Vinicius Silveira
 
-Integrante 2: [Nome completo]
+Integrante 2: Paulo Rezende
 
-Integrante 3: [Nome completo]
-
-Integrante 4: [Nome completo]
 
 Funcionalidades
 
