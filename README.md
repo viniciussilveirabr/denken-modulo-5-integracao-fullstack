@@ -1,200 +1,541 @@
-# OrbitBoard — Instruções para iniciar o trabalho da equipe
+OrbitBoard — Integração Full Stack
 
-Este documento descreve como obter o código-fonte base do projeto **OrbitBoard**, criar um repositório próprio da equipe no GitHub e realizar todo o desenvolvimento nesse novo repositório.
+Aplicação didática para gerenciamento de projetos, tarefas e integrantes de equipe, utilizada no Trabalho Final do Módulo 5 — Integração Full Stack da capacitação da CyberLabs.
 
-> **Importante:** o repositório fornecido pelo docente deve ser utilizado apenas como fonte inicial. Cada equipe deverá trabalhar exclusivamente em seu próprio repositório.
+O objetivo do projeto é demonstrar, de forma prática, a integração entre front-end, back-end/API e infraestrutura conteinerizada, incluindo consumo HTTP/JSON, documentação de endpoints, tratamento de erros, execução com Docker, testes funcionais e pipeline de integração contínua.
 
----
+Integrantes da equipe
 
-## 1. Clonar o repositório base
+Vinicius Silveira
 
-Abra um terminal e execute:
+Paulo Rezende
 
-```bash
-git clone https://github.com/denkencapacitacao/orbit-board-project.git
-```
+Funcionalidades
 
-Acesse a pasta criada:
+A aplicação permite:
 
-```bash
-cd orbit-board-project
-```
+visualizar indicadores gerais no dashboard;
 
-Confirme o estado do projeto:
+listar, criar, editar e excluir projetos;
 
-```bash
-git status
-```
+listar, criar, editar e excluir tarefas;
 
----
+alterar o status das tarefas entre Backlog, Em andamento, Em revisão e Concluída;
 
-## 2. Criar o repositório remoto da equipe no GitHub
+visualizar integrantes da equipe;
 
-No GitHub:
+consultar os endpoints pelo Swagger;
 
-1. Clique em **New repository**.
-2. Defina um nome para o repositório da equipe, por exemplo:
+verificar a disponibilidade da API pelo health check;
 
-   ```text
-   orbit-board-equipe-01
-   ```
+executar front-end e back-end em containers Docker;
 
-3. Escolha a visibilidade solicitada pelo docente.
-4. Não marque as opções de criação automática de `README`, `.gitignore` ou licença.
-5. Clique em **Create repository**.
-6. Adicione os demais integrantes da equipe como colaboradores.
+validar automaticamente os builds por meio do GitHub Actions.
 
-Copie a URL HTTPS do repositório criado. Exemplo:
+Arquitetura
 
-```text
-https://github.com/NOME-DO-USUARIO/orbit-board-equipe-01.git
-```
+A solução está dividida em duas aplicações principais:
 
----
+Navegador
+   |
+   | HTTP/JSON
+   v
+Front-end React + Vite
+   |
+   | Requisições REST
+   v
+Back-end ASP.NET Core Web API
+   |
+   v
+Dados mantidos em memória
 
-## 3. Subir o código-fonte para o repositório próprio
+Front-end
 
-Verifique o remoto atual:
+Responsável pela interface, formulários, dashboard, navegação, feedback de carregamento, sucesso e erro e consumo da API REST.
 
-```bash
-git remote -v
-```
+Back-end
 
-Renomeie o repositório do docente para `upstream`:
+Responsável pelos endpoints REST, validações, regras da aplicação, tratamento global de erros, CORS, Swagger e health check.
 
-```bash
-git remote rename origin upstream
-```
+Dados
 
-Adicione o repositório da equipe como novo `origin`:
+A aplicação-base utiliza dados em memória. Portanto, os dados criados durante os testes são reiniciados quando o container do back-end é recriado.
 
-```bash
-git remote add origin https://github.com/NOME-DO-USUARIO/orbit-board-equipe-01.git
-```
+Infraestrutura
 
-Substitua a URL acima pela URL real do repositório da equipe.
+Dockerfile próprio para o back-end;
 
-Verifique:
+Dockerfile próprio para o front-end;
 
-```bash
-git remote -v
-```
+Nginx para servir o build do React;
 
-O resultado deverá ser semelhante a:
+Docker Compose para iniciar os dois serviços;
 
-```text
-origin    https://github.com/NOME-DO-USUARIO/orbit-board-equipe-01.git (fetch)
-origin    https://github.com/NOME-DO-USUARIO/orbit-board-equipe-01.git (push)
-upstream  https://github.com/denkencapacitacao/orbit-board-project.git (fetch)
-upstream  https://github.com/denkencapacitacao/orbit-board-project.git (push)
-```
+GitHub Actions para validar automaticamente os builds.
 
-Envie o código inicial:
+Mais detalhes estão disponíveis em docs/arquitetura.md.
 
-```bash
-git branch -M main
-git push -u origin main
-```
+Tecnologias utilizadas
 
-Depois, confirme no GitHub se todos os arquivos foram publicados corretamente.
+Front-end
 
----
+React
 
-## 4. Trabalhar somente no repositório da equipe
+Vite
 
-A partir desse momento, todos os integrantes deverão clonar o repositório próprio da equipe:
+JavaScript
 
-```bash
-git clone https://github.com/NOME-DO-USUARIO/orbit-board-equipe-01.git
-```
+HTML5
 
-Acesse a pasta:
+CSS3
 
-```bash
-cd orbit-board-equipe-01
-```
+Nginx
 
-Antes de iniciar uma nova atividade:
+Back-end
 
-```bash
-git switch main
-git pull origin main
-```
+ASP.NET Core
 
-Crie uma branch específica:
+.NET 8
 
-```bash
-git switch -c feature/nome-da-atividade
-```
+C#
 
-Exemplo:
+Swagger / OpenAPI
 
-```bash
-git switch -c feature/melhoria-tela-projetos
-```
+Infraestrutura e ferramentas
 
-Após realizar as alterações:
+Docker
 
-```bash
-git status
-git add .
-git commit -m "feat: descreve objetivamente a alteração"
-git push -u origin feature/nome-da-atividade
-```
+Docker Compose
 
-Depois, abra um **Pull Request** no GitHub para integrar a branch à branch principal definida pela equipe.
+Git
 
----
+GitHub
 
-## Fluxo resumido
+GitHub Actions
 
-```text
-Repositório do docente
-        ↓ git clone
-Cópia local inicial
-        ↓ novo origin
-Repositório da equipe
-        ↓ branches e pull requests
-Desenvolvimento colaborativo
-```
+Visual Studio Code
 
----
+WSL 2
 
-## Regras importantes
+Estrutura do repositório
 
-- Não trabalhar diretamente no repositório do docente.
-- Não enviar alterações para o remoto `upstream`.
-- Utilizar o repositório da equipe como `origin`.
-- Criar branches para funcionalidades, correções e documentação.
-- Fazer commits pequenos e com mensagens claras.
-- Atualizar a branch principal antes de iniciar uma nova atividade.
-- Utilizar Pull Requests para revisar e integrar alterações.
-- Garantir que todos os integrantes tenham acesso ao repositório próprio.
+denken-modulo-5-integracao-fullstack/
+├── .github/
+│   └── workflows/
+│       └── build.yml
+├── backend/
+│   ├── OrbitBoard.Api/
+│   ├── Dockerfile
+│   ├── OrbitBoard.Api.sln
+│   └── README.md
+├── frontend/
+│   ├── src/
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   ├── package.json
+│   └── README.md
+├── docs/
+│   ├── imagens/
+│   ├── arquitetura.md
+│   ├── contrato-api.md
+│   ├── evidencias-testes.md
+│   └── roteiro-apresentacao.md
+├── docker-compose.yml
+├── .gitignore
+└── README.md
 
----
+Pré-requisitos
 
-## Comandos principais
+Para executar a aplicação, é necessário ter instalado:
 
-```bash
-# Clonar o projeto base
-git clone https://github.com/denkencapacitacao/orbit-board-project.git
-cd orbit-board-project
+Docker Desktop;
 
-# Manter o repositório do docente como referência
-git remote rename origin upstream
+suporte a containers Linux;
 
-# Conectar o repositório da equipe
-git remote add origin https://github.com/NOME-DO-USUARIO/orbit-board-equipe-01.git
+WSL 2 no Windows;
 
-# Enviar o código inicial
-git branch -M main
-git push -u origin main
+Git, caso o projeto seja clonado pelo GitHub.
 
-# Criar uma branch de trabalho
-git switch -c feature/nome-da-atividade
+Para execução sem Docker, também são necessários:
 
-# Registrar e enviar alterações
-git add .
-git commit -m "feat: descreve objetivamente a alteração"
-git push -u origin feature/nome-da-atividade
-```
+.NET SDK 8;
+
+Node.js 20 ou superior;
+
+npm.
+
+Execução com Docker Compose
+
+Na raiz do projeto, execute:
+
+docker compose up --build
+
+Caso as imagens já tenham sido construídas e exista instabilidade temporária nos registros externos, execute:
+
+docker compose up --no-build
+
+Para iniciar em segundo plano:
+
+docker compose up -d --no-build
+
+Para visualizar o estado dos serviços:
+
+docker compose ps
+
+Para acompanhar os logs:
+
+docker compose logs -f
+
+Para encerrar e remover os containers e a rede:
+
+docker compose down
+
+URLs de acesso
+
+Com os serviços em execução:
+
+Serviço
+
+URL
+
+Front-end
+
+http://localhost:5173
+
+Dashboard
+
+http://localhost:5173/dashboard
+
+Back-end/API
+
+http://localhost:5200
+
+Swagger
+
+http://localhost:5200/swagger
+
+Health check
+
+http://localhost:5200/health
+
+Execução local sem Docker
+
+Back-end
+
+Acesse a pasta do projeto da API:
+
+cd backend/OrbitBoard.Api
+
+Restaure e execute:
+
+dotnet restore
+dotnet run
+
+A API ficará disponível na porta configurada pelo projeto.
+
+Front-end
+
+Em outro terminal:
+
+cd frontend
+npm install
+npm run dev
+
+O Vite iniciará o front-end, normalmente em:
+
+http://localhost:5173
+
+A variável VITE_API_URL deve apontar para o endereço da API.
+
+Variáveis de ambiente
+
+Front-end
+
+Arquivo de exemplo:
+
+frontend/.env.example
+
+Variável utilizada:
+
+VITE_API_URL=http://localhost:5200
+
+Back-end
+
+No container, são utilizadas:
+
+ASPNETCORE_ENVIRONMENT=Development
+ASPNETCORE_URLS=http://+:5200
+
+Principais endpoints
+
+Dashboard
+
+Método
+
+Endpoint
+
+Descrição
+
+GET
+
+/api/dashboard
+
+Retorna os indicadores gerais
+
+Projetos
+
+Método
+
+Endpoint
+
+Descrição
+
+GET
+
+/api/projects
+
+Lista os projetos
+
+GET
+
+/api/projects/{id}
+
+Consulta um projeto
+
+POST
+
+/api/projects
+
+Cria um projeto
+
+PUT
+
+/api/projects/{id}
+
+Atualiza um projeto
+
+DELETE
+
+/api/projects/{id}
+
+Exclui um projeto
+
+Tarefas
+
+Método
+
+Endpoint
+
+Descrição
+
+GET
+
+/api/tasks
+
+Lista e filtra tarefas
+
+GET
+
+/api/tasks/{id}
+
+Consulta uma tarefa
+
+POST
+
+/api/tasks
+
+Cria uma tarefa
+
+PUT
+
+/api/tasks/{id}
+
+Atualiza uma tarefa
+
+PATCH
+
+/api/tasks/{id}/status
+
+Altera o status
+
+DELETE
+
+/api/tasks/{id}
+
+Exclui uma tarefa
+
+Equipe
+
+Método
+
+Endpoint
+
+Descrição
+
+GET
+
+/api/team-members
+
+Lista os integrantes
+
+Saúde da aplicação
+
+Método
+
+Endpoint
+
+Descrição
+
+GET
+
+/health
+
+Verifica se a API está disponível
+
+A documentação completa está disponível no Swagger e em docs/contrato-api.md.
+
+Testes realizados
+
+Foram executados testes manuais de:
+
+build da imagem Docker do back-end;
+
+build da imagem Docker do front-end;
+
+inicialização conjunta com Docker Compose;
+
+health check da API;
+
+abertura do Swagger;
+
+carregamento do front-end pelo Nginx;
+
+integração HTTP/JSON entre front-end e API;
+
+criação, edição e exclusão de projetos;
+
+criação e exclusão de tarefas;
+
+alteração de status de tarefas;
+
+atualização dos indicadores do dashboard;
+
+tratamento de erro quando a API não estava acessível;
+
+execução automática do pipeline CI/CD no GitHub Actions.
+
+Os resultados e prints estão documentados em:
+
+docs/evidencias-testes.md
+
+Problemas encontrados e soluções
+
+Durante a preparação do projeto foram identificados e tratados:
+
+Docker Desktop iniciado sem o mecanismo Linux;
+
+bloqueio de CORS causado por diferença entre as portas do front-end;
+
+instabilidade de rede com erro TLS handshake timeout;
+
+docker-compose.yml posicionado inicialmente na pasta incorreta;
+
+nomes automáticos de imagens diferentes das imagens construídas manualmente.
+
+As correções estão descritas detalhadamente em docs/evidencias-testes.md.
+
+Pipeline CI/CD
+
+O projeto possui um workflow do GitHub Actions localizado em:
+
+.github/workflows/build.yml
+
+O pipeline é executado automaticamente em:
+
+pushes para a branch main;
+
+pull requests direcionados para a branch main.
+
+Ele valida:
+
+restauração e build do back-end em .NET 8;
+
+instalação das dependências do front-end;
+
+build de produção do React/Vite com Node.js 20.
+
+As execuções mais recentes foram concluídas com sucesso no GitHub Actions.
+
+Documentação complementar
+
+Arquitetura da aplicação
+
+Contrato da API
+
+Evidências de testes
+
+Roteiro da apresentação
+
+Contribuição da equipe
+
+Integrante
+
+Contribuição
+
+Vinicius Silveira
+
+Desenvolvimento inicial da aplicação, organização do repositório, colaboração com Docker Compose e fluxo de versionamento
+
+Paulo Rezende
+
+Dockerfiles, integração entre front-end e back-end, testes funcionais, documentação, evidências, README e pipeline CI/CD
+
+Comandos úteis
+
+# Construir e iniciar todos os serviços
+docker compose up --build
+
+# Iniciar utilizando imagens locais
+docker compose up --no-build
+
+# Iniciar em segundo plano
+docker compose up -d --no-build
+
+# Ver containers
+docker compose ps
+
+# Ver logs
+docker compose logs -f
+
+# Encerrar os serviços
+docker compose down
+
+Observação sobre persistência
+
+O projeto utiliza dados em memória. Ao recriar ou reiniciar o container do back-end, os dados adicionados durante os testes podem retornar ao estado inicial da aplicação.
+
+Status do trabalho
+
+Back-end/API funcionando
+
+Front-end consumindo a API
+
+Swagger disponível
+
+Health check disponível
+
+Dockerfile do back-end
+
+Dockerfile do front-end
+
+Docker Compose
+
+Testes funcionais
+
+Evidências documentadas
+
+Documentação técnica
+
+Integrantes e contribuições revisados
+
+Pipeline CI/CD
