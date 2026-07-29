@@ -2,16 +2,13 @@ OrbitBoard — Integração Full Stack
 
 Aplicação didática para gerenciamento de projetos, tarefas e integrantes de equipe, utilizada no Trabalho Final do Módulo 5 — Integração Full Stack da capacitação da CyberLabs.
 
-O objetivo do projeto é demonstrar, de forma prática, a integração entre front-end, back-end/API e infraestrutura conteinerizada, incluindo consumo HTTP/JSON, documentação de endpoints, tratamento de erros, execução com Docker e registro de testes.
+O objetivo do projeto é demonstrar, de forma prática, a integração entre front-end, back-end/API e infraestrutura conteinerizada, incluindo consumo HTTP/JSON, documentação de endpoints, tratamento de erros, execução com Docker, testes funcionais e pipeline de integração contínua.
 
 Integrantes da equipe
 
-Substitua os campos abaixo pelos nomes reais antes da entrega.
+Vinicius Silveira
 
-Integrante 1: Vinicius Silveira
-
-Integrante 2: Paulo Rezende
-
+Paulo Rezende
 
 Funcionalidades
 
@@ -31,7 +28,9 @@ consultar os endpoints pelo Swagger;
 
 verificar a disponibilidade da API pelo health check;
 
-executar front-end e back-end em containers Docker.
+executar front-end e back-end em containers Docker;
+
+validar automaticamente os builds por meio do GitHub Actions.
 
 Arquitetura
 
@@ -70,7 +69,9 @@ Dockerfile próprio para o front-end;
 
 Nginx para servir o build do React;
 
-Docker Compose para iniciar os dois serviços.
+Docker Compose para iniciar os dois serviços;
+
+GitHub Actions para validar automaticamente os builds.
 
 Mais detalhes estão disponíveis em docs/arquitetura.md.
 
@@ -110,6 +111,8 @@ Git
 
 GitHub
 
+GitHub Actions
+
 Visual Studio Code
 
 WSL 2
@@ -117,6 +120,9 @@ WSL 2
 Estrutura do repositório
 
 denken-modulo-5-integracao-fullstack/
+├── .github/
+│   └── workflows/
+│       └── build.yml
 ├── backend/
 │   ├── OrbitBoard.Api/
 │   ├── Dockerfile
@@ -414,7 +420,9 @@ alteração de status de tarefas;
 
 atualização dos indicadores do dashboard;
 
-tratamento de erro quando a API não estava acessível.
+tratamento de erro quando a API não estava acessível;
+
+execução automática do pipeline CI/CD no GitHub Actions.
 
 Os resultados e prints estão documentados em:
 
@@ -436,6 +444,28 @@ nomes automáticos de imagens diferentes das imagens construídas manualmente.
 
 As correções estão descritas detalhadamente em docs/evidencias-testes.md.
 
+Pipeline CI/CD
+
+O projeto possui um workflow do GitHub Actions localizado em:
+
+.github/workflows/build.yml
+
+O pipeline é executado automaticamente em:
+
+pushes para a branch main;
+
+pull requests direcionados para a branch main.
+
+Ele valida:
+
+restauração e build do back-end em .NET 8;
+
+instalação das dependências do front-end;
+
+build de produção do React/Vite com Node.js 20.
+
+As execuções mais recentes foram concluídas com sucesso no GitHub Actions.
+
 Documentação complementar
 
 Arquitetura da aplicação
@@ -448,27 +478,17 @@ Roteiro da apresentação
 
 Contribuição da equipe
 
-Atualize esta seção antes da entrega final.
-
 Integrante
 
 Contribuição
 
-[Nome do integrante 1]
+Vinicius Silveira
 
-Docker, integração e testes
+Desenvolvimento inicial da aplicação, organização do repositório, colaboração com Docker Compose e fluxo de versionamento
 
-[Nome do integrante 2]
+Paulo Rezende
 
-Front-end e evidências
-
-[Nome do integrante 3]
-
-Back-end e Swagger
-
-[Nome do integrante 4]
-
-Documentação e apresentação
+Dockerfiles, integração entre front-end e back-end, testes funcionais, documentação, evidências, README e pipeline CI/CD
 
 Comandos úteis
 
