@@ -1,0 +1,27 @@
+services:
+  backend:
+    image: orbitboard-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: orbitboard-api
+    ports:
+      - "5200:5200"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5200
+    restart: unless-stopped
+
+  frontend:
+    image: orbitboard-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:5200
+    container_name: orbitboard-web
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
